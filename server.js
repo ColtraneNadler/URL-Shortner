@@ -57,7 +57,7 @@ app.get('*', redirect);
 // =============
 //  Listen
 // =============
-app.listen(confing.port, (err) => {
+app.listen(config.port, (err) => {
 	if(err)
 		return console.log(err);
 
