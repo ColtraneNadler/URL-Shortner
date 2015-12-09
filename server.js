@@ -25,6 +25,7 @@ var express = require('express')
 	, morgan = require('morgan');
 
 	global.redis = require('redis').createClient();
+	var config = require('./config');
 
 
 // =============
@@ -56,7 +57,7 @@ app.get('*', redirect);
 // =============
 //  Listen
 // =============
-app.listen(3000, (err) => {
+app.listen(confing.port, (err) => {
 	if(err)
 		return console.log(err);
 
