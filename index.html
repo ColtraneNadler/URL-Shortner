@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html ng-app="url">
+<head lang="en">
+	<meta charset="UTF-8"></head>
+	<title>Url Shortner</title>
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0-beta.2/angular.min.js"></script>
+</head>
+<body ng-controller="shortner">
+	<br><br><br><br>
+	<div class="container">
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<div class="container text-center">
+					<h1>shortner</h1>
+					<form ng-submit="submit()">
+						<div class="input-group">
+					      <input type="text" id="input" class="form-control" placeholder="URL to shorten" ng-model="url">
+					      <span class="input-group-btn">
+					        <button class="btn btn-primary" type="submit">Shorten</button>
+					      </span>
+					    </div>
+					</form>
+
+					<a href="{{shortend}}">{{ shortend }}</a>
+				</div>
+			</div>
+		</div>	
+	</div>
+
+</body>
+
+<style type="text/css">
+	.panel {
+		max-width: 400px;
+		margin: auto;
+	}
+
+	.container {
+		width: 100%;
+	}
+</style>
+
+<script type="text/javascript">
+	var input = document.getElementById('input');
+
+	var test = /(http:\/\/|https:\/\/)+.*/;
+	var mhq = /mhq.io/;
+
+	var app = angular.module('url', []);
+
+	app.
+		controller('shortner', function($scope, $http) {
+			$scope.submit = function() {
+				var address = $scope.url;
+
+				if(mhq.test(address))
+					return;
+
+				if(!test.test(address)) {
+					address = address.split('');
+					address.unshift('http://');
+					address[address.length - 1] === '/' ? address.pop() : null;
+					address = address.join('');
+				}
+
+				$http.post('/shorten', {url: address}).
+					then(function(data) {
+						$scope.url = 'http://' + window.location.host + '/' + data.data;
+					}, function(err) {
+						console.log(err);
+					})
+			}
+		})
+</script>
+
+</html>
